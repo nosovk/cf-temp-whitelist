@@ -3,12 +3,13 @@ const cf = require('cloudflare')({
     key: process.env['key'] || 'cloudflare api key'
 });
 const account = process.env['account'] || 'cloudflare account id'
+const tempMark = process.env['tempmark'] || 'temp'
 
 module.exports = (req, res) => {
     cf.accountAccessFirewall.add(account,{mode:"whitelist",configuration:{
             "target": "ip",
             "value": req.headers['x-real-ip']
-        },notes:"temp|1"}).then(cfResponce=>{
+        },notes:tempMark}).then(cfResponce=>{
         return res.status(200).send({listed: cfResponce.success, ip: req.headers['x-real-ip']});
     })
         .catch(err=>{

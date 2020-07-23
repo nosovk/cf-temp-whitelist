@@ -3,12 +3,13 @@ const cf = require('cloudflare')({
     key: process.env['key'] || 'cloudflare api key'
 });
 const account = process.env['account'] || 'cloudflare account id'
+const tempMark = process.env['tempmark'] || 'temp'
 
 
 module.exports = (req, res) => {
     const tasks = [];
     cf.accountAccessFirewall.browse(account).then(ips=> {
-        ips.result.filter(rec=>rec.notes.startsWith("temp|")).forEach(rec=>{
+        ips.result.filter(rec=>rec.notes.startsWith(tempMark)).forEach(rec=>{
             tasks.push(cf.accountAccessFirewall.del(account,rec.id))
         })
         Promise.all(tasks).then(result=>{
