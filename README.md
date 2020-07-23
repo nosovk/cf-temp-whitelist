@@ -1,104 +1,46 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
 
 ---
 
-# svelte app
+# CloudFlare temporary IP whitelist
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+The objective is to allow manualy add IP into CF whitelist to check site from geo restricted regions.
+For examples we block all customers form Ukraine as not relevant country, but we work from Ukraine. It's ok to whitelist office IP. But if you need some urjent check from mobile phone it would be a problem. 
+To allow fast IP whitelist small opt-in form was created.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+# tech
+Depolyed to Vercel.com, their FaaS used for connecting to CF API.
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+## API methods
+- `/api/add`: will add yours ip to whitelist, in responce
+```json
+{"listed":true,"ip":"x.x.x.x"}
+```
+or
+```json
+{"listed":false,"err":"some error"}
+```
+- `/api/check`: will return yours ip status, like is it already listed or not (permanent listing also will result true)
+```json
+{"listed":true,"ip":"x.x.x.x"}
+```
+or
+```json
+{"listed":false,"err":"some error"}
+```
+- `/api/clean`: this method used for removing all `temp` ip's from cloudflare. It should be called in desired amount of time.
+```json
+{"cleaned":true,"count":10}
+```
+or
+```json
+{"cleaned":false,"err":"some error"}
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
 
+## Cron
+There is no cron avalible at vercel. [Read an issue](https://github.com/vercel/vercel/issues/146)
+That's why we use [assertible.com](https://assertible.com), service for api monitoring as a solution for triggering `/api/clean/` once a day. Also it validates amount of temp records added every day, and if amount will be suspicios will fire email alert.
 
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
-```
-
-...then start [Rollup](https://rollupjs.org):
-
-```bash
-npm run dev
-```
-
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+## CF API (#todo)
+Unfortunately nodejs API for CF is not complete. Thats why PR from original repo currently used:
+https://github.com/cloudflare/node-cloudflare/pull/78
