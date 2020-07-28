@@ -2,26 +2,21 @@
     import {onMount} from "svelte";
 
     export let status;
+
     onMount(async () => {
         const res = await fetch("/api/check");
-        const ipInfo = await res.json();
-        status = ipInfo;
+        status = await res.json();
     });
 
     function handleClick() {
         fetch("/api/add").then(res => {
-            res.json().then(ipInfo => {
-                status = ipInfo;
-                // alert(`Your ip is ${status.listed ? 'added' : 'not added'}`)
-            }).catch(err => {
-                        alert(`Error adding ip ${JSON.stringify(err)}`)
-                    }
-            )
-        }).catch(err=>{
+            return res.json()
+        }).then(ipInfo => {
+            status = ipInfo;
+            // alert(`Your ip is ${status.listed ? 'added' : 'not added'}`)
+        }).catch(err => {
             alert(`Error adding ip ${JSON.stringify(err)}`)
         })
-
-
     }
 </script>
 
