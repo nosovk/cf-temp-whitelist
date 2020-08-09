@@ -2,7 +2,7 @@ const cf = require('cloudflare')({
     email: process.env['email'] || 'dev@nodeart.io',
     key: process.env['key'] || 'cloudflare api key'
 });
-const account = process.env['account'] || 'cloudflare account id'
+const account = process.env['accountpra'] || 'cloudflare account id'
 
 
 module.exports = (req, res) => {
