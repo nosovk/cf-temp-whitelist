@@ -9,7 +9,7 @@
     "start:dev": "sirv public --single --dev"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "rollup": "^2.42.4",
     "rollup-plugin-livereload": "^2.0.0",
