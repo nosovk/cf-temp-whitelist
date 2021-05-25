@@ -18,7 +18,7 @@
     "svelte": "^3.38.2"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.11",
+    "sirv-cli": "^1.0.12",
     "vercel": "^22.0.1",
     "cloudflare": "github:cloudflare/node-cloudflare#pull/78/head"
   }
