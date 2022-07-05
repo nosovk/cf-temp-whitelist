@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "sirv-cli": "^2.0.2",
-    "vercel": "^23.1.2",
+    "vercel": "^26.0.0",
     "cloudflare": "github:cloudflare/node-cloudflare#pull/78/head"
   }
 }
