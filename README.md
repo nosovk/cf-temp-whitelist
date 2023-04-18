@@ -3,7 +3,7 @@
 
 # CloudFlare temporary IP whitelist
 
-The objective is to allow manualy add IP into CF whitelist to check site from geo restricted regions.
+The objective is to allow manually add IP into CF whitelist to check site from geo restricted regions.
 For examples, we block all customers form Ukraine as not relevant country, but we work from Ukraine. It's ok to whitelist office IP. But if you need some urjent check from mobile phone it would be a problem. 
 To allow fast IP whitelist small opt-in form was created.
 
