@@ -8,7 +8,7 @@ For examples, we block all customers form Ukraine as not relevant country, but w
 To allow fast IP whitelist small opt-in form was created.
 
 # tech
-Depolyed to Vercel.com, their FaaS used for connecting to CF API.
+Deployed to Vercel.com, their FaaS used for connecting to CF API.
 
 ## API methods
 - `/api/add`: will add yours ip to whitelist, in responce
